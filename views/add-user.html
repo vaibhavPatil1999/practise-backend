@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add-user</title>
+    <link rel="stylesheet" href="/add-user.css">
+</head>
+
+<body>
+    <header>
+
+        <nav>
+            <!-- //<ul id="ul"> -->
+            <h3>click here to see our users</h3>
+            <!-- <li>
+                    <a href="/">users</a>
+                </li> -->
+
+            </ul>
+        </nav>
+    </header>
+
+    <form id="form">
+
+        <h2 class="h2">Book a call</h2>
+        <p>
+            <label for="name" class="floatLabel">Name:</label>
+            <input id="name" name="name" type="text">
+
+
+        </p>
+        <p>
+            <label for="Email" class="floatLabel">Email:</label>
+            <input id="Email" name="Email" type="text">
+
+        </p>
+        <p>
+            <label for="Contact_Number" class="floatLabel">Contact Number</label>
+            <input id="Contact_Number" name="Contact_Number" type="text">
+
+        </p>
+        <p>
+            <input type="submit" value="Register" id="submit">
+        </p>
+    </form>
+    <ul id="ul"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script>
+        const myform = document.getElementById('form')
+        myform.addEventListener('submit', saveInDB)
+        function saveInDB(e) {
+            e.preventDefault()
+
+
+            const name = e.target.name.value
+            const Email = e.target.Email.value
+            const contact = e.target.Contact_Number.value
+
+            const details = {
+                name: name,
+                Email: Email,
+                contact: contact
+
+            }
+
+           
+            
+            axios.post('http://localhost:8081/add-user', details)
+                .then((Response) => {
+                    showOnScreen(Response.data)
+                   
+
+
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                // .then(() => { alert('kaam kr rha hai') })
+
+            e.target.name.value = ""
+            e.target.Email.value = ""
+            e.target.Contact_Number.value = ""
+
+
+
+
+        }
+
+
+        function showOnScreen(user) {
+
+            
+            
+                        var parentNode = document.getElementById('ul')
+                        const childHTML = `<li> ${user.name} - ${user.Email}
+            <button onclick=deleteUser('${user._id}')> Delete User </button>
+            <button onclick=editUserDetails('${user.name}','${user.Email}','${user.contact}')>Edit User </button>
+                                     </li><br>`
+                        parentNode.innerHTML = parentNode.innerHTML + childHTML;
+            
+            
+            
+                    }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
