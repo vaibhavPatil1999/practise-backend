@@ -12,7 +12,7 @@ router.get('/user/get-user',getController2.getCon)
 
 router.delete('/user/delete/:id',getController2.deleteCOn)
  
-
+router.post('/user/update-user',getController2.updateC)
 
 
 module.exports = router

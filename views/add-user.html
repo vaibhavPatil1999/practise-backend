@@ -131,19 +131,27 @@
             }
         }
 
+
         function editUserDetails(name, email, phoneNumber,userID) {
             document.getElementById('name').value = name
             document.getElementById('Email').value = email
             document.getElementById('Contact_Number').value = phoneNumber
-
+                 console.log(userID)
           
+                 const updateObj = {
+                    name,
+                    email,
+                    phoneNumber,
+                    userID
+                 } 
 
-            deleteUser(userID)
+                 axios.post('http://localhost:8081/user/update-user',updateObj)
+           
 
 
         }
 
-
+         
 
 
 
