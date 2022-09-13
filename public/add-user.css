@@ -117,3 +117,22 @@ label {
   background-color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
 }
+
+ul {
+  margin: 0 0 50px 0;
+  padding: 10px;
+  text-align:left;
+  font-size: 15px;
+  color: darken(#e5e5e5 50%);
+  text-shadow: 0 1px gold;
+  
+
+  padding: 4em 4em 2em;
+  max-width: 400px;
+  margin: 50px auto 0;
+  box-shadow: 0 0 1em #222;
+  border-radius: 2px;
+  
+
+
+}
