@@ -22,7 +22,7 @@
 
 
 
-   
+
     <form id="form">
         <h2 class="h2">Book a call</h2>
         <p>
@@ -38,14 +38,16 @@
             <input id="Contact_Number" name="Contact_Number" type="text">
         </p>
         <p>
-            <input type="submit" value="Register" id="submit">
+            <input type="submit" value="Register" id="submit" style="display:block">
+            <input type="submit" value="update" id="update" style="display:none">
+
         </p>
-    
+
     </form>
-    
+
     <ul style="color:blanchedalmond" ; class="ul" ; id="ul"></ul>
 
-    
+
 
 
 
@@ -69,7 +71,7 @@
 
             axios.post('http://localhost:8081/user/add-user', details)
                 .then((Response) => {
-                     
+
                     showOnScreen(Response.data)
                 })
                 .catch((err) => {
@@ -99,6 +101,34 @@
 
         }
 
+
+        function showOnScreen_AfterUpdates(OBJ) {
+               
+            document.getElementById('name').value = " "
+            document.getElementById('Email').value = " "
+            document.getElementById('Contact_Number').value = " "
+
+
+            var parentNode = document.getElementById('ul')
+
+            const childHTML =
+                `<li id="${OBJ.id}"> ${OBJ.name} - ${OBJ.email}
+                <button onclick=deleteUser('${OBJ.id}')>Delete</button>
+                <button onclick=editUserDetails('${OBJ.name}','${OBJ.email}','${OBJ.contact}','${OBJ.id}')>Edit</button>
+                </li><br>`
+
+            parentNode.innerHTML = parentNode.innerHTML + childHTML;
+        }
+
+
+
+
+
+
+
+
+
+
         window.addEventListener('DOMContentLoaded', () => {
             axios
                 .get('http://localhost:8081/user/get-user').then((Response) => {
@@ -115,7 +145,7 @@
                 .delete(`http://localhost:8081/user/delete/${userID}`)
                 .then((Response) => {
                     removeFromscreen(userID)
-                }).catch((err)=>{
+                }).catch((err) => {
                     console.log(err)
                 })
 
@@ -132,26 +162,72 @@
         }
 
 
-        function editUserDetails(name, email, phoneNumber,userID) {
+        function removeFromscreen_afterUpdates(OBJ) {
+            var parentNode = document.getElementById('ul')
+            var childNodeToBeDeleted = document.getElementById(OBJ.id)
+            if (childNodeToBeDeleted) {
+                parentNode.removeChild(childNodeToBeDeleted);
+            }
+            showOnScreen_AfterUpdates(OBJ)
+        }
+
+
+
+        function editUserDetails(name, email, phoneNumber, userID) {
+
+
+
+
+            const submit = document.getElementById('submit')
+            submit.style.display = "none"
+
+            document.getElementById('update').style.display = "block"
+
+
             document.getElementById('name').value = name
             document.getElementById('Email').value = email
             document.getElementById('Contact_Number').value = phoneNumber
-                 console.log(userID)
-          
-                 const updateObj = {
-                    name,
-                    email,
-                    phoneNumber,
-                    userID
-                 } 
 
-                 axios.post('http://localhost:8081/user/update-user',updateObj)
-           
+            document.getElementById('update').addEventListener('click', (e) => {
+                e.preventDefault()
+                editUser(userID)
 
+
+
+            })
 
         }
 
-         
+        function editUser(userID) {
+            const updateObj = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('Email').value,
+                phoneNumber: document.getElementById('Contact_Number').value,
+                userID
+            }
+
+
+            
+            axios.post('http://localhost:8081/user/update-user', updateObj)
+                .then((result) => {
+
+                    const resObj = {
+                        id: result.data.data.id,
+                        name: result.data.data.name,
+                        email: result.data.data.email,
+                        phoneNumber: result.data.data.phoneNumber
+                    }
+
+
+                    document.getElementById('submit').style.display = "block"
+                    document.getElementById('update').style.display = "none"
+
+                    removeFromscreen_afterUpdates(resObj)
+
+                })
+
+        }
+
 
 
 

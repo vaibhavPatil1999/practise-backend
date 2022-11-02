@@ -70,10 +70,17 @@ exports.deleteCOn = async (req, res, next) => {
 exports.updateC = (req,res,next) =>{
 
     const {name,email,phoneNumber,userID} = req.body
+    
        var id = userID
     appointmentTable.findAll({where:{id}}).then((result)=>{
             appointmentTable.update({name:name,email:email,contact:phoneNumber},{where:{id}}).then(()=>{
-                console.log("bbb")
+                  var infoObj = {
+                    name,
+                    email,
+                    phoneNumber,
+                    id
+                  }
+                  res.json({data:infoObj})
             })
     })
 }
